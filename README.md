@@ -1,6 +1,6 @@
-# ArcadiaUZ avtomatika
+# OpenCode publish skill
 
-Har yangi loyiha -> GitHub'ga push -> @ArcadiaUZ kanalga o'zbekcha post.
+Har yangi loyiha -> GitHub'ga push -> Telegram kanalga o'zbekcha post.
 
 ## Fayllar
 - `publish.ps1` — to'liq avtomat: repo yaratish + push + telegram post (Windows)
@@ -15,12 +15,12 @@ Har yangi loyiha -> GitHub'ga push -> @ArcadiaUZ kanalga o'zbekcha post.
 
 ## Windows'da ishlatish
 ```powershell
-# To'liq (avval --DryRun bilan sinab ko'ring):
+# To'liq (avval -DryRun bilan sinab ko'ring):
 powershell -NoProfile -ExecutionPolicy Bypass -File .\publish.ps1 `
   -Path D:\AI\my-app -Repo my-app -Desc "AI yordamchi" -Demo https://my-app.fly.dev
 
 # Faqat telegram:
-powershell -NoProfile -ExecutionPolicy Bypass -File .\send-telegram.ps1 "Salom ArcadiaUZ!"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\send-telegram.ps1 "Salom!" -Channel @my_channel
 ```
 
 Parametrlar: `-Repo` (repo nomi), `-Desc` (tavsif), `-Demo` (demo URL),
@@ -28,24 +28,36 @@ Parametrlar: `-Repo` (repo nomi), `-Desc` (tavsif), `-Demo` (demo URL),
 
 ## Skill sifatida agent'ga ulash (OpenCode)
 
-Skil `SKILL.md` faylidan iborat. OpenCode uni avtomatik topadi va kerak bo'lganda
+Skill `SKILL.md` faylidan iborat. OpenCode uni avtomatik topadi va kerak bo'lganda
 o'zi yuklaydi — siz buyruq yozishingiz shart emas.
 
 ## Sozlash (1 marta)
-1. Botni `@ArcadiaUZ` kanalga **admin** qil (Post Messages huquqi bilan).
+1. Botni o'z kanalingizga **admin** qil (Post Messages huquqi bilan).
    Kanal -> Manage Channel -> Administrators -> Add -> botni qidir.
 2. `.env.example` ni `.env` deb saqlab, `TELEGRAM_BOT_TOKEN` ni to'ldir
-   (`@BotFather` dan), `TELEGRAM_CHANNEL=@ArcadiaUZ` ni tekshir.
-3. GitHub token: `GITHUB_TOKEN` ni `.env` ga yozing yoki `D:\AI\TOKENS.md`
-   faylida `ghp_...` ko'rinishida qoldiring — skript avtomat o'qib oladi.
+   (`@BotFather` dan), `TELEGRAM_CHANNEL` ga o'z kanalini yoz.
+3. GitHub token: `GITHUB_TOKEN` ni `.env` ga yozing yoki birinchi darajadagi
+   papkadagi `TOKENS.md` faylida `ghp_...` ko'rinishida qoldiring — skript
+   avtomat o'qib oladi.
 
 ## Ishlatish
 ```bash
 # To'liq:
-Yani siz shu repository ni AI Agent ga tashlaysiz va shu skill ni o'zinga qo'sh deb yozasin u shu reponi yuklab oziga skill sifatida qoshadi,
-va qoshilgandan keyin siz unga Github API key (upload, push kabi ruxsatlar bilan) va telegram bot token berasiz va u skill ga saqlab oladi,
-keyin telegram bot ni kanalizga admin qilasiz va endi biror bir narsani github ga push qilish yoki kanalga post qoyish kerak bolsa shunchaki soraysiz
-"Shu loyihamni github ga yangi repo ochib (repo-nomi) bolsin va telegram ga post qo'y shu repo haqida" deb yozasiz u avtomatik skill larni korib telegram/github ga joylaydi loyihangizni.
+./publish.sh -Path ~/my-app -Repo my-app -Desc "AI yordamchi"
+
+# Faqat telegram:
+./send-telegram.sh "Salom!" @my_channel
 ```
 
-Tokenlar `../TOKENS.md` dan avtomatik o'qiladi, `.env` da `GITHUB_TOKEN` bo'sh bo'lsa ham ishlaydi.
+Agent'ga shunday aytsangiz yetarli:
+"Shu loyihamni GitHub'ga yangi repo qilib tashla va kanalga post qo'y" —
+agent skill'ni yuklab, avtomatik bajaradi.
+
+Tokenlar `TOKENS.md` dan avtomatik o'qiladi, `.env` da `GITHUB_TOKEN` bo'sh
+bo'lsa ham ishlaydi.
+
+## Xavfsizlik
+
+- `.env` hech qachon git'ga tushmasligi kerak (`.gitignore` da turadi).
+- Tokenlarni chatga yozmang, commit xabariga yozmang.
+- Ikkalasi ham bo'lmasa skript xato beradi va to'xtaydi.

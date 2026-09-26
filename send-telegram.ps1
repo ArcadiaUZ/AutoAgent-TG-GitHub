@@ -1,11 +1,11 @@
 ﻿<#
 .SYNOPSIS
-  ArcadiaUZ — Telegram kanaliga post yuborish.
+  Telegram kanaliga post yuborish.
 .DESCRIPTION
   .env faylidan TELEGRAM_BOT_TOKEN va TELEGRAM_CHANNEL ni oladi va
   xabarni kanalga yuboradi. Token hech qachon ekranga chiqarilmaydi.
 .EXAMPLE
-  .\send-telegram.ps1 "Salom ArcadiaUZ!"
+  .\send-telegram.ps1 "Salom!" -Channel @my_channel
 #>
 [CmdletBinding()]
 param(
@@ -29,9 +29,9 @@ if (Test-Path (Join-Path $Dir '.env')) {
 
 $Token  = $env:TELEGRAM_BOT_TOKEN
 $ChatId = if ($Channel) { $Channel } else { $env:TELEGRAM_CHANNEL }
-if (-not $ChatId) { $ChatId = '@ArcadiaUZ' }
 
-if (-not $Token) { throw "XATO: TELEGRAM_BOT_TOKEN yo'q. D:\AI\automation\.env ga qo'shing." }
+if (-not $Token) { throw "XATO: TELEGRAM_BOT_TOKEN yo'q. $Dir\.env ga qo'shing." }
+if (-not $ChatId) { throw "XATO: TELEGRAM_CHANNEL yo'q. .env ga kanal nomini yozing yoki -Channel parametridan foydalaning." }
 if (-not $Message) { throw "XATO: xabar matni bo'sh" }
 
 $json = @{
@@ -48,5 +48,5 @@ try {
   else { throw "Telegram rad etdi: $($r.description)" }
 } catch {
   $msg = $_.Exception.Message -replace [regex]::Escape($Token), '***'
-  throw "Telegram XATO: $msg`nBot kanalga admin ekanini tekshir (@Arcadia_AIbot)."
+  throw "Telegram XATO: $msg`nBot kanalga admin ekanini tekshir."
 }
