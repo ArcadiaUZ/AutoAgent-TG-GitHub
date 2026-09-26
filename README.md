@@ -31,44 +31,11 @@ Parametrlar: `-Repo` (repo nomi), `-Desc` (tavsif), `-Demo` (demo URL),
 Skil `SKILL.md` faylidan iborat. OpenCode uni avtomatik topadi va kerak bo'lganda
 o'zi yuklaydi — siz buyruq yozishingiz shart emas.
 
-**1) Global (barcha loyihalarda ishlaydi):**
-```
-%USERPROFILE%\.config\opencode\skills\publish\SKILL.md
-```
+Yani siz shu repository ni AI Agent ga tashlaysiz va shu skill ni o'zinga qo'sh deb yozasin u shu reponi yuklab oziga skill sifatida qoshadi,
+va qoshilgandan keyin siz unga Github API key (upload, push kabi ruxsatlar bilan) va telegram bot token berasiz va u skill ga saqlab oladi,
+keyin telegram bot ni kanalizga admin qilasiz va endi biror bir narsani github ga push qilish yoki kanalga post qoyish kerak bolsa shunchaki soraysiz
+"Shu loyihamni github ga yangi repo ochib (repo-nomi) bolsin va telegram ga post qo'y shu repo haqida" deb yozasiz u avtomatik skill larni korib telegram/github ga joylaydi loyihangizni.
 
-**2) Loyihaga xos:**
-```
-<loyiha>\.opencode\skills\publish\SKILL.md
-```
-
-**3) Tayyor faylni nusxalash:**
-```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.config\opencode\skills\publish"
-Copy-Item .\SKILL.md "$env:USERPROFILE\.config\opencode\skills\publish\SKILL.md"
-```
-
-**4) Boshqa joydagi skill katalogini ulash** — `opencode.json` ga qo'shing:
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "skills": ["D:/AI/automation"]
-}
-```
-Bu holda `D:\AI\automation\SKILL.md` fayli `SKILL` ID si bilan yuklanadi.
-
-**5) Tekshirish:** agent ishga tushgandan keyun `publish` skill ro'yxatda
-ko'rinishi kerak. Uni qo'lda yuklash uchun: `skill` -> `id: publish`.
-Skill nomi va tavsifi `SKILL.md` dagi `frontmatter` da:
-
-```markdown
----
-name: Publish
-description: Loyihani GitHub'ga push qilish va @ArcadiaUZ kanaliga post yuborish
----
-```
-
-Skill ID fayl yo'lidan kelib chiqadi (`skills/publish/SKILL.md` -> `publish`),
-`name` esa faqat ko'rsatish uchun.
 
 ## Sozlash (1 marta)
 1. Botni `@ArcadiaUZ` kanalga **admin** qil (Post Messages huquqi bilan).
