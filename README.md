@@ -31,12 +31,6 @@ Parametrlar: `-Repo` (repo nomi), `-Desc` (tavsif), `-Demo` (demo URL),
 Skil `SKILL.md` faylidan iborat. OpenCode uni avtomatik topadi va kerak bo'lganda
 o'zi yuklaydi — siz buyruq yozishingiz shart emas.
 
-Yani siz shu repository ni AI Agent ga tashlaysiz va shu skill ni o'zinga qo'sh deb yozasin u shu reponi yuklab oziga skill sifatida qoshadi,
-va qoshilgandan keyin siz unga Github API key (upload, push kabi ruxsatlar bilan) va telegram bot token berasiz va u skill ga saqlab oladi,
-keyin telegram bot ni kanalizga admin qilasiz va endi biror bir narsani github ga push qilish yoki kanalga post qoyish kerak bolsa shunchaki soraysiz
-"Shu loyihamni github ga yangi repo ochib (repo-nomi) bolsin va telegram ga post qo'y shu repo haqida" deb yozasiz u avtomatik skill larni korib telegram/github ga joylaydi loyihangizni.
-
-
 ## Sozlash (1 marta)
 1. Botni `@ArcadiaUZ` kanalga **admin** qil (Post Messages huquqi bilan).
    Kanal -> Manage Channel -> Administrators -> Add -> botni qidir.
@@ -48,14 +42,10 @@ keyin telegram bot ni kanalizga admin qilasiz va endi biror bir narsani github g
 ## Ishlatish
 ```bash
 # To'liq:
-bash publish.sh <papka> <repo-nomi> "tavsif" [--demo https://...] [--dry-run]
-
-# Misollar:
-bash publish.sh ../robot-face robot-face "Robot yuz — jonli AI yordamchi"
-bash publish.sh ../LuminaMedia lumina-media "Media platforma" --demo https://lumina-media.fly.dev
-
-# Faqat telegram:
-bash send-telegram.sh "Salom ArcadiaUZ!"
+Yani siz shu repository ni AI Agent ga tashlaysiz va shu skill ni o'zinga qo'sh deb yozasin u shu reponi yuklab oziga skill sifatida qoshadi,
+va qoshilgandan keyin siz unga Github API key (upload, push kabi ruxsatlar bilan) va telegram bot token berasiz va u skill ga saqlab oladi,
+keyin telegram bot ni kanalizga admin qilasiz va endi biror bir narsani github ga push qilish yoki kanalga post qoyish kerak bolsa shunchaki soraysiz
+"Shu loyihamni github ga yangi repo ochib (repo-nomi) bolsin va telegram ga post qo'y shu repo haqida" deb yozasiz u avtomatik skill larni korib telegram/github ga joylaydi loyihangizni.
 ```
 
 Tokenlar `../TOKENS.md` dan avtomatik o'qiladi, `.env` da `GITHUB_TOKEN` bo'sh bo'lsa ham ishlaydi.
