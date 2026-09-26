@@ -1,6 +1,6 @@
 ---
 name: Publish
-description: Publish a project to GitHub and/or post to a Telegram channel. Use when the user asks to publish, push, release or "noylantirish" a project ("GitHub'ga push qil", "telegramga post qil", "publish qil", "release qil"), or asks to send a message to their Telegram channel.
+description: Publish a project to GitHub and/or post to a Telegram channel, with an optional fly.io deploy step. Use when the user asks to publish, push, release or "noylantirish" a project ("GitHub'ga push qil", "telegramga post qil", "publish qil", "release qil", "fly.io ga deploy qil", "host qil"), or asks to send a message to their Telegram channel.
 ---
 
 # Publish skill
@@ -9,6 +9,14 @@ PowerShell/bash scripts do all the work:
 
 - `publish.ps1` / `publish.sh` — GitHub repo yaratish + push + Telegram post
 - `send-telegram.ps1` / `send-telegram.sh` — faqat Telegram post
+- `deploy-fly.ps1` / `deploy-fly.sh` — fly.io'ga joylashtirish (ixtiyoriy,
+  avval publish'dan). To'liq qoida: **`FLY_DEPLOY.md`**
+- `install-fly.ps1` — flyctl o'rnatish (bir marta)
+
+> Loyiha fly.io'ga joylashtirilishi kerak bo'lsa (demo URL kerak, "host
+> qil", "deploy qil", "onlayn qil" deb so'ralsa) — **avval `deploy-fly.*`
+> ishlatiladi**, keyin `publish.*` bilan GitHub + Telegram post yuboriladi.
+> `FLY_DEPLOY.md` ni o'qib tur; u aytgan qoidalar bajarilishi shart.
 
 ## Scriptlarni topish
 
@@ -36,6 +44,12 @@ chaqir. Hech qachon skriptni qayta yozma — u allaqach tekshirilgan.
    description, first use in a session), then run for real.
 6. Run scripts with `powershell -NoProfile -ExecutionPolicy Bypass -File ...` —
    the machine blocks unsigned scripts by default. Do not chain with `&&`.
+7. **Never touch a fly.io app without explicit confirmation.** If the user
+   did not name an app, ask which one — never pick one yourself. Run
+   `deploy-fly.*` once to print the plan, show it to the user, and only
+   re-run with `-Yes` after they approve. Never run `fly apps create`,
+   `fly destroy`, `fly secrets set`, or `fly scale` on your own initiative.
+   See `FLY_DEPLOY.md`.
 
 ## Setup check (cheap, once per session)
 
@@ -70,6 +84,32 @@ user. Always dry run first, then run for real:
 powershell -NoProfile -ExecutionPolicy Bypass -File <script> -Path D:\AI\my-app -Repo my-app -Desc "AI yordamchi" -DryRun
 powershell -NoProfile -ExecutionPolicy Bypass -File <script> -Path D:\AI\my-app -Repo my-app -Desc "AI yordamchi"
 ```
+
+## Deploy to fly.io + GitHub + Telegram (to'liq oqim)
+
+Avval `FLY_DEPLOY.md` ni o'qib tur. Qisqasi:
+
+```powershell
+# 1) reja (hech narsani o'zgartirmaydi)
+powershell -NoProfile -ExecutionPolicy Bypass -File <deploy-script> -Path <project-dir> -App <fly-app>
+
+# 2) foydalanuvchi tasdiqlagandan keyin
+powershell -NoProfile -ExecutionPolicy Bypass -File <deploy-script> -Path <project-dir> -App <fly-app> -Yes
+
+# 3) GitHub + Telegram
+powershell -NoProfile -ExecutionPolicy Bypass -File <script> -Path <project-dir> -Repo <repo> -Desc "<tavsif>" -Demo https://<fly-app>.fly.dev
+```
+
+- `-App` **berilmasa** skript to'xtaydi va mavjud app'lar ro'yxatini
+  chiqaradi — foydalanuvchidan qaysi app ekanini **so'rang**, o'zi
+  tanlamang.
+- `-Yes` **berilmasa** skript faqat reja ko'rsatadi, hech narsani
+  o'zgartirmaydi.
+- Loyiha hajmiga qarab CPU/RAM avtomat tanlanadi va **avto-suspend**
+  (`auto_stop_machines = 'suspend'`, `min_machines_running = 0`) doim
+  qo'llanadi — bo'sh holatda to'lov chiqmaydi.
+- `.env` ga `FLY_API_TOKEN` qo'shilishi kerak. Hech qachon ekranga
+  chiqarilmaydi.
 
 ## Telegram only
 
